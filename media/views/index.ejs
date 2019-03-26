@@ -159,20 +159,24 @@
             } else{
                 txt = "Vous avez créé l'album "+titre+"";
                 console.log(titre);
-                var request = new XMLHttpRequest ();
-                request.onload = function(){
+                var request2 = new XMLHttpRequest ();
+                request2.onload = function(){
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
-                    console.log(albums);
+                    albums[titre] = [];
+                    //albums[titre].push('maison.jpg');
+                    console.log(albums[titre]);
+                    //Manque la partie de POST pour modifier le JSON
+                    var myJSON = JSON.stringify(albums);
+                    console.log(myJSON);
                 }
-                request.open("GET", "../public/images/liste_albums.json", true);
-                request.send(null);
+                request2.open("GET", "../public/images/liste_albums.json", true);
+                request2.send(null);
+
+
                 return(titre)
             }
         }
-
-        //titre = creer_album()
-        //var titre = creer_album();
 
         ajouter_album = function(){
             console.log(titre)
