@@ -26,24 +26,13 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 //--------------------------
 app.get('/public/images', function(req,res){
-  console.log('me han llamado');
+  console.log('public/images');
 	//res.render('hello', {param: 'Public'});
 });
 app.get('/public', function(req,res){
-  res.send('Hey theeere');
+  res.send('public');
 });
-/*
-app.get('/public/images', function(req,res){
-  res.send('Images !');
-})
-*/
-/*
-app.get('/users', function(req,res){
-	res.send('Hello there');
-	console.log('Hello there');
-});
-*/
-//-----------------------
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
