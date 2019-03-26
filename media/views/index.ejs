@@ -14,8 +14,8 @@
             width: 310px;
             position: fixed;
             z-index: 1;
-            top: 120px;
-            right: 110px;
+            top: 190px;
+            right: 130px;
             background: #96172e;
             overflow-x: hidden;
             padding: 8px 0;
@@ -58,7 +58,7 @@
   </head>
   <body>
     <div class="sidenav" id="noms_des_photos">
-
+        <p style='color: #000;'><u><b>Photos disponibles</b></u></p>
     </div>
 
     <div class="main">
@@ -66,8 +66,7 @@
         <div>   
             <button onclick="showImage()">Charger les images</button>
         </div>
-        <div id="name">
-
+        <div id="titre">
         </div>
 
         <p></p>
@@ -103,9 +102,7 @@
                 var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
                 //var h = "";
                 for (i in liste.photos){
-                    //console.log(liste.photos[i]);
                     h = h + "\n"+"<div><a onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a><div>";
-                    //texto.innerHTML = "<a href='../public/images/"+liste.photos[i]+"'>"+liste.photos[i]+"</p>";
                 }
                 h = h + "\n"+"<div><p> </p></div>";
                 //console.log('h', h);
@@ -121,6 +118,8 @@
 
         show = function(name){
             var image = document.getElementById("dropzone");
+            var titre = document.getElementById("titre")
+            titre.innerHTML = "<h2>"+name+"</h2>"
             source = "../images/"+name;
             image.src = source;
             actual_photo = name;
@@ -132,6 +131,8 @@
                 if (index != 0) {
                     var image = document.getElementById("dropzone");
                     name = liste_photos.photos[index-1];
+                    var titre = document.getElementById("titre")
+                    titre.innerHTML = "<h2>"+name+"</h2>"
                     source = "../images/"+name;
                     image.src = source;
                     actual_photo = name;
@@ -145,6 +146,8 @@
                 if (index < size-1) {
                     var image = document.getElementById("dropzone");
                     name = liste_photos.photos[index+1];
+                    var titre = document.getElementById("titre")
+                    titre.innerHTML = "<h2>"+name+"</h2>"
                     source = "../images/"+name;
                     image.src = source;
                     actual_photo = name;  
@@ -155,7 +158,7 @@
             var txt;
             var titre = prompt("Titre de l'album", "");
             if (titre == null || titre == "") {
-                alert('Album non créé');
+                //alert('Album non créé');
             } else{
                 txt = "Vous avez créé l'album "+titre+"";
                 console.log(titre);
@@ -166,6 +169,7 @@
                     albums[titre] = [];
                     //albums[titre].push('maison.jpg');
                     console.log(albums[titre]);
+
                     //Manque la partie de POST pour modifier le JSON
                     var myJSON = JSON.stringify(albums);
                     console.log(myJSON);
