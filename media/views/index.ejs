@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ECL Media Player</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <style>
+    	body {
+    		text-align: center;
+    		background: #acacac;
+    	}
+
+        .sidenav{
+            /*height: 100%;*/
+            width: 310px;
+            position: fixed;
+            z-index: 1;
+            top: 120px;
+            right: 110px;
+            background: #96172e;
+            overflow-x: hidden;
+            padding: 8px 0;
+        }
+        .sidenav p {
+            text-decoration: none;
+            font-size: 20px;
+            text-align: center;
+            color: #acacac;
+        }
+        .sidenav a {
+            color: #000;
+            text-align: center;
+            font-size: 18px;
+        }
+    	.contents{	
+    		padding: 40px;
+    		opacity: 0.7;
+    		text-align: center;
+    	}
+        .main {
+            margin-right: 130px;
+            padding: 0px 10px;
+        }
+        .center{
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+            width: 40%;
+        }
+    	h1 {
+    		color: #acacac;
+    		font-size: 40px;
+    		/*background: #96172e;*/
+    	}
+    	p {
+    		font-size: 20px;
+    	}
+    </style>
+  </head>
+  <body>
+    <div class="sidenav" id="noms_des_photos">
+
+    </div>
+
+    <div class="main">
+        <h1 style="color: #96172e">ECL Media Player</h1>
+        <div>   
+            <button onclick="showImage()">Charger les images</button>
+        </div>
+        <div id="name">
+
+        </div>
+
+        <p></p>
+        <p></p>
+        <img id="dropzone" class="center"/>
+        <h1></h1>
+        <h1></h1>
+        <div class="buttons">
+            <button onclick="precedent()"><<<<</button>
+            <button onclick="next()">>>>></button>
+        </div>
+        <p></p>
+        <p id="creation"></p>
+        <div id="album">
+            <button onclick="ajouter_album()">Ajouter la photo à un album</button>
+            <button onclick="titre = creer_album()">Créer un album</button>
+        </div>
+    </div>
+     
+    <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>-->
+    <script type="text/javascript">
+        flag = false;
+        liste_photos = [];
+        actual_photo = "";
+
+    	showImage = function(){
+    		//request.open("GET", "../images/plane.jpg");
+            var request = new XMLHttpRequest ();
+            request.onload = function(){
+                var resp = this.responseText;
+                var liste = JSON.parse(resp);
+                liste_photos = liste;
+                var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
+                //var h = "";
+                for (i in liste.photos){
+                    //console.log(liste.photos[i]);
+                    h = h + "\n"+"<div><a onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a><div>";
+                    //texto.innerHTML = "<a href='../public/images/"+liste.photos[i]+"'>"+liste.photos[i]+"</p>";
+                }
+                h = h + "\n"+"<div><p> </p></div>";
+                //console.log('h', h);
+                //texto.innerHTML = "<a onclick=show()>"+liste.photos[1]+"</a>";
+                noms_des_photos.innerHTML = h;
+            };
+            request.open("GET", "../public/images/liste_photos.json", true);
+            request.send(null);
+    		//var image = document.getElementById("dropzone");
+    		//image.src = "../images/plane.jpg";
+            flag = true;
+    	}
+
+        show = function(name){
+            var image = document.getElementById("dropzone");
+            source = "../images/"+name;
+            image.src = source;
+            actual_photo = name;
+
+        }
+        precedent = function(){
+            if (flag == true){
+                var index = liste_photos.photos.indexOf(actual_photo);
+                if (index != 0) {
+                    var image = document.getElementById("dropzone");
+                    name = liste_photos.photos[index-1];
+                    source = "../images/"+name;
+                    image.src = source;
+                    actual_photo = name;
+                }        
+            }      
+        }
+        next = function(){
+            if (flag == true){
+                var index = liste_photos.photos.indexOf(actual_photo);
+                var size = liste_photos.photos.length;
+                if (index < size-1) {
+                    var image = document.getElementById("dropzone");
+                    name = liste_photos.photos[index+1];
+                    source = "../images/"+name;
+                    image.src = source;
+                    actual_photo = name;  
+                }                                   
+            }
+        }
+        creer_album = function(){
+            var txt;
+            var titre = prompt("Titre de l'album", "");
+            if (titre == null || titre == "") {
+                alert('Album non créé');
+            } else{
+                txt = "Vous avez créé l'album "+titre+"";
+                console.log(titre);
+                var request = new XMLHttpRequest ();
+                request.onload = function(){
+                    var resp = this.responseText;
+                    var albums = JSON.parse(resp);
+                    console.log(albums);
+                }
+                request.open("GET", "../public/images/liste_albums.json", true);
+                request.send(null);
+                return(titre)
+            }
+        }
+
+        //titre = creer_album()
+        //var titre = creer_album();
+
+        ajouter_album = function(){
+            console.log(titre)
+            //Ajouter la photo à l'un des albums existants
+        }
+    </script>
+  </body>
+</html>
