@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static(path.join(__dirname, 'public/javascripts/')));
-app.use(express.static('./'));
+//app.use(express.static('./'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -31,6 +31,15 @@ app.get('/public/images', function(req,res){
 });
 app.get('/public', function(req,res){
   res.send('public');
+});
+app.post('/newalbum',function(req,res){
+	fs.writeFile("./public/images/liste_albums.json", JSON.stringify(res.body), (err) => {
+    if (err) {
+        console.error(err);
+        return;
+    };
+    console.log("File has been created");
+});
 });
 
 

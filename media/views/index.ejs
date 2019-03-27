@@ -93,27 +93,45 @@
         actual_photo = "";
 
     	showImage = function(){
+			var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
     		//request.open("GET", "../images/plane.jpg");
             var request = new XMLHttpRequest ();
             request.onload = function(){
                 var resp = this.responseText;
                 var liste = JSON.parse(resp);
                 liste_photos = liste;
-                var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
+                
                 //var h = "";
                 for (i in liste.photos){
-                    h = h + "\n"+"<div><a onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a><div>";
+                    h = h + "\n"+"<div><a onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
                 }
                 h = h + "\n"+"<div><p> </p></div>";
                 //console.log('h', h);
                 //texto.innerHTML = "<a onclick=show()>"+liste.photos[1]+"</a>";
-                noms_des_photos.innerHTML = h;
+                
             };
-            request.open("GET", "../public/images/liste_photos.json", true);
+            request.open("GET", "http://localhost:3000/images/liste_photos.json", true);
             request.send(null);
     		//var image = document.getElementById("dropzone");
     		//image.src = "../images/plane.jpg";
             flag = true;
+			var albumrequest = new XMLHttpRequest ();
+            albumrequest.onload = function(){
+                var resp = this.responseText;
+                var liste_album = JSON.parse(resp);
+				h+= "<p style='color: #000;'><u><b>albums disponibles</b></u></p>";
+                //var h = "";
+                for (var i=0;i<liste_album.albums.length;i++){
+                    h+= "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a onclick=showimages_album \
+					('+JSON.stringify(liste_album.albums[i])+')>'+Object.keys(liste_album.albums[i])+'</a></div>';
+                }
+                h = h + "\n"+"<div><p> </p></div>";
+				noms_des_photos.innerHTML = h;
+				
+            };
+			albumrequest.open("GET", "http://localhost:3000/images/liste_albums.json", true);
+            albumrequest.send(null);
+			
     	}
 
         show = function(name){
@@ -125,6 +143,15 @@
             actual_photo = name;
 
         }
+		showimages_album=function(names){
+					names=JSON.parse(names);
+					for ( j in names[Object.keys(names)]){
+						var node=document.createElement('div');
+						node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
+						document.getElementById(Object.keys(names)).appendChild(node);
+			}
+           
+		}
         precedent = function(){
             if (flag == true){
                 var index = liste_photos.photos.indexOf(actual_photo);
@@ -176,8 +203,6 @@
                 }
                 request2.open("GET", "../public/images/liste_albums.json", true);
                 request2.send(null);
-
-
                 return(titre)
             }
         }
