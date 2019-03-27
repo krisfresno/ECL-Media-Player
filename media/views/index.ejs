@@ -81,7 +81,7 @@
         <p></p>
         <p id="creation"></p>
         <div id="album">
-            <button onclick="ajouter_album()">Ajouter la photo à un album</button>
+            <button onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
             <button onclick="titre = creer_album()">Créer un album</button>
         </div>
     </div>
@@ -90,11 +90,10 @@
     <script type="text/javascript">
         flag = false;
         liste_photos = [];
-        actual_photo = "";
+        actual_photo = "" ;
 
     	showImage = function(){
 			var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
-    		//request.open("GET", "../images/plane.jpg");
             var request = new XMLHttpRequest ();
             request.onload = function(){
                 var resp = this.responseText;
@@ -110,7 +109,7 @@
                 //texto.innerHTML = "<a onclick=show()>"+liste.photos[1]+"</a>";
                 
             };
-            request.open("GET", "http://localhost:3000/images/liste_photos.json", true);
+            request.open("GET", "/images/liste_photos.json", true);
             request.send(null);
     		//var image = document.getElementById("dropzone");
     		//image.src = "../images/plane.jpg";
@@ -129,7 +128,7 @@
 				noms_des_photos.innerHTML = h;
 				
             };
-			albumrequest.open("GET", "http://localhost:3000/images/liste_albums.json", true);
+			albumrequest.open("GET", "/images/liste_albums.json", true);
             albumrequest.send(null);
 			
     	}
@@ -138,7 +137,7 @@
             var image = document.getElementById("dropzone");
             var titre = document.getElementById("titre")
             titre.innerHTML = "<h2>"+name+"</h2>"
-            source = "../images/"+name;
+            source = "/images/"+name;
             image.src = source;
             actual_photo = name;
 
@@ -160,7 +159,7 @@
                     name = liste_photos.photos[index-1];
                     var titre = document.getElementById("titre")
                     titre.innerHTML = "<h2>"+name+"</h2>"
-                    source = "../images/"+name;
+                    source = "/images/"+name;
                     image.src = source;
                     actual_photo = name;
                 }        
@@ -201,14 +200,24 @@
                     var myJSON = JSON.stringify(albums);
                     console.log(myJSON);
                 }
-                request2.open("GET", "../public/images/liste_albums.json", true);
+                request2.open("GET", "/images/liste_albums.json", true);
                 request2.send(null);
                 return(titre)
             }
         }
 
-        ajouter_album = function(){
-            console.log(titre)
+        ajouter_photo_a_album = function(){
+            if (actual_photo != "") {
+                console.log(actual_photo);
+                var album_req = new XMLHttpRequest()
+                album_req.onload = function(){
+                    var resp = this.responseText;
+                    var albums = JSON.parse(resp);
+                    console.log(albums);
+                }
+                album_req.open("GET", "/images/liste_albums.json", true);
+                album_req.send(null);
+            }
             //Ajouter la photo à l'un des albums existants
         }
     </script>
