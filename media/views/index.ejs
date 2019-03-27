@@ -231,8 +231,6 @@
                         if (titre == titulo) {
                             flag = true;
                             id = i;
-                            console.log("SI")
-                            //ajouter photo à album
                         }
                     }
                     if (flag == false) {
@@ -242,6 +240,8 @@
                         //console.log(albums.albums[id][titre])
                         albums.albums[id][titre].push(actual_photo);
                         console.log(albums.albums[id][titre]);
+                        var JSON_file = JSON.stringify(albums);
+                        console.log(JSON_file);
                     }
                     //alert(Object.keys(albums.albums[0]));
                     //var a;
