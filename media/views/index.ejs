@@ -242,6 +242,10 @@
                         console.log(albums.albums[id][titre]);
                         var JSON_file = JSON.stringify(albums);
                         console.log(JSON_file);
+                        var envoyer = new XMLHttpRequest()
+                        envoyer.open("POST", "/newalbum", true);
+                        envoyer.setRequestHeader("Content-Type", "application/json");
+                        envoyer.send(JSON_file);
                     }
                     //alert(Object.keys(albums.albums[0]));
                     //var a;
