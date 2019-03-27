@@ -30,6 +30,7 @@
             color: #000;
             text-align: center;
             font-size: 18px;
+            display: block;
         }
     	.contents{	
     		padding: 40px;
@@ -81,11 +82,10 @@
         <p></p>
         <p id="creation"></p>
         <div id="album">
-            <button onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
+            <button onclick="ajouter_photo_a_album()" class="dropbtn">Ajouter la photo à un album</button>
+            <div id="myDropdown" class="dropdown-content"></div>
+
             <button onclick="titre = creer_album()">Créer un album</button>
-        </div>
-        <div id="dialog">
-            <p>Choose your option</p>
         </div>
     </div>
      
@@ -220,9 +220,25 @@
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
                     console.log(albums);
-                    var texto = "Second";
-                    var selected = 0;
-                    $(function(){
+                    var a = montrer_liste_options(albums);
+                    console.log(a)
+                    }
+                    /*for (i in albums.albums){
+                        console.log(albums.albums[i]);
+                    }*/
+                }
+                album_req.open("GET", "/images/liste_albums.json", true);
+                album_req.send(null);
+            }
+            //Ajouter la photo à l'un des albums existants
+        montrer_liste_options = function(albums){
+            //console.log("Ha funcionado");
+            //console.log(albums);
+            
+            return selection
+        }
+
+        /*$(function(){
                         $("#dialog").dialog({
                             buttons: {
                                 "First": function(){
@@ -233,17 +249,8 @@
                                 }
                             }
                         });                   
-                    });
-                    
-                    /*for (i in albums.albums){
-                        console.log(albums.albums[i]);
-                    }*/
-                }
-                album_req.open("GET", "/images/liste_albums.json", true);
-                album_req.send(null);
-            }
-            //Ajouter la photo à l'un des albums existants
-        }
+                    });*/
     </script>
   </body>
 </html>
+
