@@ -83,10 +83,9 @@
         <p id="creation"></p>
         <div id="album">
             <button onclick="ajouter_photo_a_album()" class="dropbtn">Ajouter la photo à un album</button>
-            <div id="myDropdown" class="dropdown-content"></div>
-
             <button onclick="titre = creer_album()">Créer un album</button>
         </div>
+        <div id="view-by"></div>
     </div>
      
     <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>-->
@@ -214,28 +213,59 @@
 
         ajouter_photo_a_album = function(){
             if (actual_photo != "") {
-                console.log(actual_photo);
+                //console.log(actual_photo);
                 var album_req = new XMLHttpRequest()
                 album_req.onload = function(){
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
                     console.log(albums);
-                    var a = montrer_liste_options(albums);
-                    console.log(a)
+                    var liste = "";
+                    for (i in albums.albums){
+                        var titulo = Object.keys(albums.albums[i]);
+                        liste = liste + "\n" + titulo;
+                    }
+                    var titre = prompt("Albums disponibles: "+"\n"+liste, "");
+                    var flag = false;
+                    for (i in albums.albums){
+                        var titulo = Object.keys(albums.albums[i]);
+                        if (titre == titulo) {
+                            flag = true;
+                            id = i;
+                            console.log("SI")
+                            //ajouter photo à album
+                        }
+                    }
+                    if (flag == false) {
+                        alert("Album non existant")
+                    } else {
+                        //console.log(titre);
+                        //console.log(albums.albums[id][titre])
+                        albums.albums[id][titre].push(actual_photo);
+                        console.log(albums.albums[id][titre]);
+                    }
+                    //alert(Object.keys(albums.albums[0]));
+                    //var a;
+
+                    //var titre;
+                    //a = montrer_liste_options(albums);
+                    //console.log(a[1]);
+                    //console.log(titre);
+                    //albums.albums[a].push(actual_photo);
+                    //console.log(albums.albums[a[0]][a[1]]);
+                    //albums.albums[a[0]][a[1]].push(actual_photo);
+                    //console.log(albums);
+
                     }
                     /*for (i in albums.albums){
                         console.log(albums.albums[i]);
                     }*/
-                }
                 album_req.open("GET", "/images/liste_albums.json", true);
                 album_req.send(null);
+                }      
             }
             //Ajouter la photo à l'un des albums existants
         montrer_liste_options = function(albums){
-            //console.log("Ha funcionado");
-            //console.log(albums);
             
-            return selection
         }
 
         /*$(function(){
@@ -250,6 +280,37 @@
                             }
                         });                   
                     });*/
+                    /*//console.log("Ha funcionado");
+            //console.log(albums);
+            var cont = "<select id='droplist' onchange='myFunction()'>"
+            var menu = document.getElementById("view-by");
+            //console.log(albums)
+            for (i in albums.albums){
+                var titulo = Object.keys(albums.albums[i]);
+                //console.log(Object.keys(albums.albums[i]));
+                //console.log(titulo[0]);
+                cont = cont + "\n"+"<option value='"+i+"'>"+titulo[0]+"</option>";
+                /*for (j in albums.albums[i]){
+                    //console.log('eh', albums.albums[i][j]);
+                }
+                //cont = cont + "\n"+"<option value='"+i+"'>"+albums.albums[i]
+            }
+            cont = cont + "\n"+"</select>";
+            //console.log(cont);
+            menu.innerHTML = cont;
+            var flag = true;
+
+            myFunction = function(){
+                var e = document.getElementById('droplist');
+                var selection = e.options[e.selectedIndex].value;
+                var titre = e.options[e.selectedIndex].text;
+                console.log('selection', selection);
+                console.log('titre', titre);
+            }           
+            selection = 0;
+            titre = "avions"
+            console.log('saliendo');
+            return [selection, titre];*/
     </script>
   </body>
 </html>
