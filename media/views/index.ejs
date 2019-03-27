@@ -84,9 +84,15 @@
             <button onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
             <button onclick="titre = creer_album()">Créer un album</button>
         </div>
+        <div id="dialog">
+            <p>Choose your option</p>
+        </div>
     </div>
      
     <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>-->
+    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
     <script type="text/javascript">
         flag = false;
         liste_photos = [];
@@ -214,6 +220,24 @@
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
                     console.log(albums);
+                    var texto = "Second";
+                    var selected = 0;
+                    $(function(){
+                        $("#dialog").dialog({
+                            buttons: {
+                                "First": function(){
+                                    selected = 1;
+                                },
+                                texto: function(){
+                                    selected = 2;
+                                }
+                            }
+                        });                   
+                    });
+                    
+                    /*for (i in albums.albums){
+                        console.log(albums.albums[i]);
+                    }*/
                 }
                 album_req.open("GET", "/images/liste_albums.json", true);
                 album_req.send(null);
