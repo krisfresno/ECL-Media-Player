@@ -224,25 +224,24 @@
                             id = i;
                         }
                     }
-                    if (flag == false & titre != "" & titre != null) { //
+                    if (flag == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
                         alert("L'album n'existe pas !");
                     } 
                     if (flag == true) { //Ajouter la photo a l'album
                         var ajouter = true;
                         for (i in albums.albums[id][titre]){ // Verifier que la photo n'existe pas déjà sur l'album
                             photo_in_album = albums.albums[id][titre][i];
-                            if (actual_photo == photo_in_album){
+                            if (actual_photo == photo_in_album){ //La photo existe sur l'album
                                 ajouter = false;
                             }
                         }
-                        if (ajouter == false){
+                        if (ajouter == false){ //Verifier si l'utilisatuer veut ajouter quand-même la photo
                             var confirmer = confirm("La photo existe déjà sur l'album. Voulez vous l'ajouter quand-même ?");
                             if (confirmer == true) { //On l'ajoute quand-même
                                 ajouter = true;
                             }    
                         }
-                        if (ajouter == true) { //Si la photo n'est pas sur l'album on l'ajoute directement
-                            console.log('Photo ajouté'); 
+                        if (ajouter == true) { //Ajouter la photo
                             albums.albums[id][titre].push(actual_photo);
                             var JSON_file = JSON.stringify(albums);
                             var envoyer = new XMLHttpRequest()
@@ -250,7 +249,6 @@
                             envoyer.setRequestHeader("Content-Type", "application/json");
                             envoyer.send(JSON_file);
                         }
-                        console.log(albums.albums);
                     }
                 album_req.open("GET", "/images/liste_albums.json", true);
                 album_req.send(null);
