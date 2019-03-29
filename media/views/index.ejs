@@ -8,6 +8,9 @@
     		text-align: center;
     		background: #acacac;
     	}
+        .liste a:hover {
+            color: white;
+        }
 
         .sidenav{
             /*height: 100%;*/
@@ -98,26 +101,21 @@
         actual_photo = "" ;
 
     	showImage = function(){
-			var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
+			var h = "<p class='liste' style='color: #000;'><u><b>Photos disponibles</b></u></p>"
             var request = new XMLHttpRequest ();
             request.onload = function(){
                 var resp = this.responseText;
                 var liste = JSON.parse(resp);
                 liste_photos = liste;
                 
-                //var h = "";
                 for (i in liste.photos){
                     h = h + "\n"+"<div><a onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
                 }
                 h = h + "\n"+"<div><p> </p></div>";
-                //console.log('h', h);
-                //texto.innerHTML = "<a onclick=show()>"+liste.photos[1]+"</a>";
                 
             };
             request.open("GET", "/images/liste_photos.json", true);
             request.send(null);
-    		//var image = document.getElementById("dropzone");
-    		//image.src = "../images/plane.jpg";
             flag = true;
 			var albumrequest = new XMLHttpRequest ();
             albumrequest.onload = function(){
@@ -189,7 +187,6 @@
             var txt;
             var titre = prompt("Titre de l'album", "");
             if (titre == null || titre == "") {
-                //alert('Album non créé');
             } else{
                 txt = "Vous avez créé l'album "+titre+"";
                 console.log(titre);
@@ -198,12 +195,8 @@
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
                     albums[titre] = [];
-                    //albums[titre].push('maison.jpg');
-                    console.log(albums[titre]);
-
                     //Manque la partie de POST pour modifier le JSON
                     var myJSON = JSON.stringify(albums);
-                    console.log(myJSON);
                 }
                 request2.open("GET", "/images/liste_albums.json", true);
                 request2.send(null);
@@ -213,18 +206,16 @@
 
         ajouter_photo_a_album = function(){
             if (actual_photo != "") {
-                //console.log(actual_photo);
                 var album_req = new XMLHttpRequest()
                 album_req.onload = function(){
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
-                    console.log(albums);
                     var liste = "";
                     for (i in albums.albums){
                         var titulo = Object.keys(albums.albums[i]);
                         liste = liste + "\n" + titulo;
                     }
-                    var titre = prompt("Albums disponibles: "+"\n"+liste, "");
+                    var titre = prompt("Albums disponibles: "+"\n"+liste+"\n ", "");
                     var flag = false;
                     for (i in albums.albums){
                         var titulo = Object.keys(albums.albums[i]);
@@ -233,44 +224,38 @@
                             id = i;
                         }
                     }
-                    if (flag == false) {
-                        alert("Album non existant")
-                    } else {
-                        //console.log(titre);
-                        //console.log(albums.albums[id][titre])
-                        albums.albums[id][titre].push(actual_photo);
-                        console.log(albums.albums[id][titre]);
-                        var JSON_file = JSON.stringify(albums);
-                        console.log(JSON_file);
-                        var envoyer = new XMLHttpRequest()
-                        envoyer.open("POST", "/newalbum", true);
-                        envoyer.setRequestHeader("Content-Type", "application/json");
-                        envoyer.send(JSON_file);
+                    if (flag == false & titre != "" & titre != null) { //
+                        alert("L'album n'existe pas !");
+                    } 
+                    if (flag == true) { //Ajouter la photo a l'album
+                        var ajouter = true;
+                        for (i in albums.albums[id][titre]){ // Verifier que la photo n'existe pas déjà sur l'album
+                            photo_in_album = albums.albums[id][titre][i];
+                            if (actual_photo == photo_in_album){
+                                ajouter = false;
+                            }
+                        }
+                        if (ajouter == false){
+                            var confirmer = confirm("La photo existe déjà sur l'album. Voulez vous l'ajouter quand-même ?");
+                            if (confirmer == true) { //On l'ajoute quand-même
+                                ajouter = true;
+                            }    
+                        }
+                        if (ajouter == true) { //Si la photo n'est pas sur l'album on l'ajoute directement
+                            console.log('Photo ajouté'); 
+                            albums.albums[id][titre].push(actual_photo);
+                            var JSON_file = JSON.stringify(albums);
+                            var envoyer = new XMLHttpRequest()
+                            envoyer.open("POST", "/newalbum", true);
+                            envoyer.setRequestHeader("Content-Type", "application/json");
+                            envoyer.send(JSON_file);
+                        }
+                        console.log(albums.albums);
                     }
-                    //alert(Object.keys(albums.albums[0]));
-                    //var a;
-
-                    //var titre;
-                    //a = montrer_liste_options(albums);
-                    //console.log(a[1]);
-                    //console.log(titre);
-                    //albums.albums[a].push(actual_photo);
-                    //console.log(albums.albums[a[0]][a[1]]);
-                    //albums.albums[a[0]][a[1]].push(actual_photo);
-                    //console.log(albums);
-
-                    }
-                    /*for (i in albums.albums){
-                        console.log(albums.albums[i]);
-                    }*/
                 album_req.open("GET", "/images/liste_albums.json", true);
                 album_req.send(null);
                 }      
             }
-            //Ajouter la photo à l'un des albums existants
-        montrer_liste_options = function(albums){
-            
-        }
 
         /*$(function(){
                         $("#dialog").dialog({
