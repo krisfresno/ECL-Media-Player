@@ -250,10 +250,11 @@
                             envoyer.send(JSON_file);
                         }
                     }
+                }    
                 album_req.open("GET", "/images/liste_albums.json", true);
-                album_req.send(null);
-                }      
+                album_req.send(null);  
             }
+        }
 
         /*$(function(){
                         $("#dialog").dialog({
