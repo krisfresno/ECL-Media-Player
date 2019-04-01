@@ -72,11 +72,6 @@
             width: 100px;
             height: 30px;
         }
-        /*.change:hover{
-            color: #96172e;
-            background-color: black;
-            border: 2px solid #96172e;
-        }*/
         .charger{
             font-size: 20px;
             text-align: center;
@@ -132,7 +127,7 @@
     <div class="main">
         <h1 style="color: #96172e; font-size: 60px;">ECL Media Player</h1>
         <div>   
-            <button class="charger" onclick="showImage()">Charger les images</button>
+            <button class="charger" onclick="loadImage()">Charger les images</button>
         </div>
         <div id="titre">
         </div>
@@ -143,9 +138,9 @@
         <h1></h1>
         <h1></h1>
         <div class="buttons">
-            <button class="change" onclick="precedent()"><<<<</button>
-            <button onclick="presentation()">Presentation</button>
-            <button class="change" onclick="next()">>>>></button>
+            <button class="change" style="height: 35px;" onclick="precedent()"><<<<</button>
+            <button class="modif_album2" style="width: 140px;" onclick="presentation()">Présentation</button>
+            <button class="change" style="height: 35px;" onclick="next()">>>>></button>
         </div>
         <p></p>
         <p id="creation"></p>
@@ -166,16 +161,15 @@
         liste_photos = [];
         actual_photo = "" ;
 
-    	showImage = function(){
+    	loadImage = function(){
 			var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>"
             var request = new XMLHttpRequest ();
             request.onload = function(){
                 var resp = this.responseText;
                 var liste = JSON.parse(resp);
                 liste_photos = liste;
-                //style='color: #fff' class='liste' 
                 for (i in liste.photos){
-                    h = h + "\n"+"<div><a style='color: #fff;' onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
+                    h = h + "\n"+"<div><a style='color: #fff; font-size: 18px;' onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
                 }
                 h = h + "\n"+"<div><p> </p></div>";
                 noms_des_photos.innerHTML = h;
@@ -183,13 +177,15 @@
             request.open("GET", "/images/liste_photos.json", true);
             request.send(null);
             flag = true;
+
+
 			var albumrequest = new XMLHttpRequest ();
             albumrequest.onload = function(){
                 var resp = this.responseText;
                 var liste_album = JSON.parse(resp);
-                var left_text = "<p style='color: #000;'><u><b>albums disponibles</b></u></p>";
+                var left_text = "<p style='color: #000;'><u><b>Albums disponibles</b></u></p>";
                 for (var i=0;i<liste_album.albums.length;i++){
-                    left_text += "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a style="color: #fff;" onclick=showimages_album \
+                    left_text += "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a style="color: #fff; font-size: 21px;" onclick=show_images_album \
 					('+JSON.stringify(liste_album.albums[i])+')>'+Object.keys(liste_album.albums[i])+'</a></div>';
                 }
                 h = h + "\n"+"<div><p> </p></div>";
@@ -210,15 +206,15 @@
             actual_photo = name;
 
         }
-		showimages_album=function(names){
+		show_images_album=function(names){
 					names=JSON.parse(names);
 					for ( j in names[Object.keys(names)]){
 						var node=document.createElement('div');
 						node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
 						document.getElementById(Object.keys(names)).appendChild(node);
-			}
-           
+			}       
 		}
+        
         precedent = function(){
             if (flag == true){
                 var index = liste_photos.photos.indexOf(actual_photo);
@@ -270,6 +266,7 @@
         eliminer_album = function(){
             
         }
+
         presentation = function(){
             var t = 2.5;
             
@@ -287,18 +284,18 @@
                         liste = liste + "\n" + titulo;
                     }
                     var titre = prompt("Albums disponibles: "+"\n"+liste+"\n ", "");
-                    var flag = false;
+                    var control = false;
                     for (i in albums.albums){
                         var titulo = Object.keys(albums.albums[i]);
                         if (titre == titulo) {
-                            flag = true;
+                            control = true;
                             id = i;
                         }
                     }
-                    if (flag == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
+                    if (control == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
                         alert("L'album n'existe pas !");
                     } 
-                    if (flag == true) { //Ajouter la photo a l'album
+                    if (control == true) { //Ajouter la photo a l'album
                         var ajouter = true;
                         for (i in albums.albums[id][titre]){ // Verifier que la photo n'existe pas déjà sur l'album
                             photo_in_album = albums.albums[id][titre][i];
