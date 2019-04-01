@@ -130,13 +130,17 @@
         <h1></h1>
         <div class="buttons">
             <button class="change" onclick="precedent()"><<<<</button>
+            <button onclick="presentation()">Presentation</button>
             <button class="change" onclick="next()">>>>></button>
         </div>
         <p></p>
         <p id="creation"></p>
-        <div id="album">
+        <div id="ajouter_photo_album">
             <button class="modif_album1" onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
+        </div>
+        <div id="albums">
             <button class="modif_album2" onclick="titre = creer_album()">Créer un album</button>
+            <button class="modif_album2" onclick="titre = eliminer_album()">Supprimer un album</button>
         </div>
         <div id="view-by"></div>
     </div>
@@ -253,7 +257,11 @@
         eliminer_album = function(){
             
         }
-        
+        presentation = function(){
+            var t = 2.5;
+            
+        }
+
         ajouter_photo_a_album = function(){      
             if (actual_photo != "") {
                 var album_req = new XMLHttpRequest()
