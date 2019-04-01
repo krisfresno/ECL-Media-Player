@@ -15,7 +15,7 @@
         .liste:hover {
         }
 
-        .sidenav{
+        .sidenav_right{
             /*height: 100%;*/
             width: 310px;
             position: fixed;
@@ -26,13 +26,23 @@
             overflow-x: hidden;
             padding: 8px 0;
         }
-        .sidenav p {
+        .sidenav_left{
+            width: 280px;
+            position: fixed;
+            z-index: 1;
+            top: 190px;
+            left: 100px;
+            background: #96172e;
+            overflow-x: hidden;
+            padding: 8px 0;
+        }
+        .sidenav_right p , .sidenav_left p{
             text-decoration: none;
             font-size: 20px;
             text-align: center;
             color: #acacac;
         }
-        .sidenav a {
+        .sidenav_right a , .sidenav_left a{
             color: #000;
             text-align: center;
             font-size: 18px;
@@ -110,7 +120,11 @@
     </style>
   </head>
   <body>
-    <div class="sidenav" id="noms_des_photos">
+    <div class="sidenav_left" id="liste_albums">
+        <p style='color: #000;'><u><b>Albums disponibles</b></u></p>
+        <p style="color: #fff;">Aucun album chargé</p>
+    </div>
+    <div class="sidenav_right" id="noms_des_photos">
         <p style='color: #000;'><u><b>Photos disponibles</b></u></p>
         <p style="color: #fff;">Aucune photo chargée</p>
     </div>
@@ -164,7 +178,7 @@
                     h = h + "\n"+"<div><a style='color: #fff;' onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
                 }
                 h = h + "\n"+"<div><p> </p></div>";
-                
+                noms_des_photos.innerHTML = h;
             };
             request.open("GET", "/images/liste_photos.json", true);
             request.send(null);
@@ -173,14 +187,13 @@
             albumrequest.onload = function(){
                 var resp = this.responseText;
                 var liste_album = JSON.parse(resp);
-				h+= "<p style='color: #000;'><u><b>albums disponibles</b></u></p>";
-                //var h = "";
+                var left_text = "<p style='color: #000;'><u><b>albums disponibles</b></u></p>";
                 for (var i=0;i<liste_album.albums.length;i++){
-                    h+= "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a style="color: #fff;" onclick=showimages_album \
+                    left_text += "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a style="color: #fff;" onclick=showimages_album \
 					('+JSON.stringify(liste_album.albums[i])+')>'+Object.keys(liste_album.albums[i])+'</a></div>';
                 }
                 h = h + "\n"+"<div><p> </p></div>";
-				noms_des_photos.innerHTML = h;
+				liste_albums.innerHTML = left_text;
 				
             };
 			albumrequest.open("GET", "/images/liste_albums.json", true);
