@@ -264,7 +264,34 @@
             }
         }
         eliminer_album = function(){
-            
+            var txt;
+            var album_req = new XMLHttpRequest();
+            album_req.onload = function(){
+                var resp = this.responseText;
+                var albums = JSON.parse(resp);
+                var name;
+                var liste = "";
+                for (i in albums.albums){
+                        name = Object.keys(albums.albums[i]);
+                        liste = liste + "\n" + name;
+                }
+                //console.log(liste);
+                var titre = prompt("Albums existants: "+"\n"+liste+"\n ", "");
+                var control = false;
+                for (i in albums.albums){
+                    var name = Object.keys(albums.albums[i]);
+                    if (titre == name) {
+                        control = true;
+                        id = i;
+                    }
+                }
+                if (control == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
+                    alert("L'album n'existe pas !");
+                } 
+
+            }            
+            album_req.open("GET", "/images/liste_albums.json", true);
+            album_req.send(null);  
         }
 
         presentation = function(){
@@ -278,16 +305,17 @@
                 album_req.onload = function(){
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
+                    var name;
                     var liste = "";
                     for (i in albums.albums){
-                        var titulo = Object.keys(albums.albums[i]);
-                        liste = liste + "\n" + titulo;
+                        name = Object.keys(albums.albums[i]);
+                        liste = liste + "\n" + name;
                     }
                     var titre = prompt("Albums disponibles: "+"\n"+liste+"\n ", "");
                     var control = false;
                     for (i in albums.albums){
-                        var titulo = Object.keys(albums.albums[i]);
-                        if (titre == titulo) {
+                        var name = Object.keys(albums.albums[i]);
+                        if (titre == name) {
                             control = true;
                             id = i;
                         }
