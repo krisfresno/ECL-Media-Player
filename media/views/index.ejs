@@ -16,7 +16,6 @@
         }
 
         .sidenav_right{
-            /*height: 100%;*/
             width: 330px;
             position: fixed;
             z-index: 1;
@@ -98,12 +97,12 @@
             width: 350px;
             height: 35px;
         }
-        .modif_album1:hover, .modif_album2:hover, .charger:hover, .change:hover{
+        .modif_album1:hover, .modif_album2:hover, .charger:hover, .change:hover, .presentation:hover{
             color: #96172e;
             background-color: black;
             border: 2px solid #96172e;
         }
-        .modif_album2{
+        .modif_album2, .presentation{
             font-size: 20px;
             text-align: center;
             background-color: #96172e;
@@ -149,20 +148,23 @@
         
         <h1></h1>
         <h1></h1>
-        <div class="buttons">
-            <button class="change" style="height: 35px;" onclick="precedent()"><<<<</button>
-            <button class="modif_album2" style="width: 140px;" onclick="presentation()">Présentation</button>
-            <button class="change" style="height: 35px;" onclick="next()">>>>></button>
+        <div class="all_buttons">
+            <div class="buttons">
+                <button class="change" style="height: 35px;" onclick="precedent()"><<<<</button>
+                <button id="presentation" class="presentation" style="width: 140px;" onclick="presentation()">Présentation</button>
+                <button class="change" style="height: 35px;" onclick="next()">>>>></button>
+            </div>
+            <p></p>
+            <p id="creation"></p>
+            <div id="ajouter_photo_album">
+                <button class="modif_album1" onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
+            </div>
+            <div id="albums">
+                <button class="modif_album2" onclick="titre = creer_album()">Créer un album</button>
+                <button class="modif_album2" onclick="titre = eliminer_album()">Supprimer un album</button>
+            </div>
         </div>
-        <p></p>
-        <p id="creation"></p>
-        <div id="ajouter_photo_album">
-            <button class="modif_album1" onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
-        </div>
-        <div id="albums">
-            <button class="modif_album2" onclick="titre = creer_album()">Créer un album</button>
-            <button class="modif_album2" onclick="titre = eliminer_album()">Supprimer un album</button>
-        </div>
+
         <div id="view-by"></div>
     </div>
      
@@ -235,26 +237,41 @@
             }      
         }
         presentation = function(){
-            var t = 3;
+            var t = 2.5;
             if (flag == true) {
                 var index = liste_photos.indexOf(actual_photo);
                 var size = liste_photos.length;
                 var cont = 0;
                 var image = document.getElementById("dropzone");
                 var titre = document.getElementById("titre");
+                var pres = document.getElementById("presentation");
+                //pres.innerHTML = "Arreter";
+                var time_flag = true;
                 if (index != size-1) {
                     for (var i = index; i < size - 1; i++) {
                     let k = i;
-                    setTimeout(function(){
-                        name = liste_photos[k+1];
-                        titre.innerHTML = "<h2>"+name+"</h2>";
-                        source = "../images/"+name;
-                        image.src = source;   
-                    }, 1000*t + 1000*t*cont);
-                    cont += 1;
+                    if (time_flag == true) {
+                        timer = setTimeout(function(){
+                            name = liste_photos[k+1];
+                            titre.innerHTML = "<h2>"+name+"</h2>";
+                            source = "../images/"+name;
+                            image.src = source;   
+                        }, 1000*t + 1000*t*cont);
+                        //console.log(cont);
+                        cont += 1;
+                    }
+                    /*document.onclick = function(event){
+                        clearTimeout(timer);
+                        console.log('click');
+                        time_flag = false;
+                        }*/
                     }
                 }
+
             }       
+        }
+        cantar = function(){
+            console.log('caaanto');
         }
 
         next = function(){
