@@ -17,7 +17,7 @@ router.get('/', function(req, res) {
 	});
 	console.log(lista);
   	res.render('index', { 
-  		list : JSON.stringify(casa),
+  		list : JSON.stringify(lista),
   	});
 });
 
