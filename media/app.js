@@ -20,14 +20,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.static(path.join(__dirname, 'public/javascripts/')));
-//app.use(express.static('./'));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 //--------------------------
 app.get('/public/images', function(req,res){
   console.log('public/images');
-	//res.render('hello', {param: 'Public'});
 });
 app.get('/public', function(req,res){
   res.send('public');

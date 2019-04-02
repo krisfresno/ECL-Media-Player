@@ -211,11 +211,11 @@
 
         }
 		show_images_album=function(names){
-					names=JSON.parse(names);
-					for ( j in names[Object.keys(names)]){
-						var node=document.createElement('div');
-						node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
-						document.getElementById(Object.keys(names)).appendChild(node);
+			names=JSON.parse(names);
+			for ( j in names[Object.keys(names)]){
+				var node=document.createElement('div');
+				node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
+				document.getElementById(Object.keys(names)).appendChild(node);
 			}       
 		}
         
