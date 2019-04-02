@@ -20,9 +20,11 @@
             position: fixed;
             z-index: 1;
             top: 190px;
+            bottom: 25px;
             right: 130px;
             background: #96172e;
             overflow-x: hidden;
+            overflow-y: scroll;
             padding: 8px 0;
             border: 2px solid black;
         }
@@ -66,10 +68,6 @@
             width: 35%;
             border: 2px solid black;
         }
-        .espace{
-            display: block;
-
-        }
         .change{
             font-size: 25px;
             text-align: center;
@@ -111,11 +109,6 @@
             width: 200px;
             height: 35px;
         }
-    	h1 {
-    		/*color: #acacac;*/
-    		/*font-size: 40px;*/
-    		/*background: #96172e;*/
-    	}
     	p {
     		font-size: 20px;
     	}
@@ -134,20 +127,17 @@
     </div>
     <div class="main">
         <h1 id="Titre_de_page" style="color: #96172e; font-size: 60px; text-align: center;">ECL Media Player</h1>
+
         <div>   
             <button class="charger" style="align-self: center" onclick="loadImage()">Charger les images</button>
         </div>
-        <div id="titre">
-        </div>
 
-        <p></p>
-        <p></p>
+        <div id="titre"></div>
+
         <div>
             <img id="dropzone" class="center"/>
         </div>
         
-        <h1></h1>
-        <h1></h1>
         <div class="all_buttons" style="position: fixed; text-align: center; bottom: 15px; right: 100px; left: 100px;">
             <div class="buttons">
                 <button class="change" style="height: 35px;" onclick="precedent()"><<<<</button>
