@@ -8,28 +8,44 @@
     		text-align: center;
     		background: #acacac;
     	}
-        .liste a:hover {
-            color: white;
+        .liste {
+            color: green;
+
+        }
+        .liste:hover {
         }
 
-        .sidenav{
-            /*height: 100%;*/
-            width: 310px;
+        .sidenav_right{
+            width: 330px;
             position: fixed;
             z-index: 1;
             top: 190px;
-            right: 130px;
+            bottom: 25px;
+            right: 120px;
+            background: #96172e;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            padding: 8px 0;
+            border: 2px solid black;
+        }
+        .sidenav_left{
+            width: 330px;
+            position: fixed;
+            z-index: 1;
+            top: 190px;
+            left: 120px;
             background: #96172e;
             overflow-x: hidden;
             padding: 8px 0;
+            border: 2px solid black;
         }
-        .sidenav p {
+        .sidenav_right p , .sidenav_left p{
             text-decoration: none;
             font-size: 20px;
             text-align: center;
             color: #acacac;
         }
-        .sidenav a {
+        .sidenav_right a , .sidenav_left a{
             color: #000;
             text-align: center;
             font-size: 18px;
@@ -41,97 +57,138 @@
     		text-align: center;
     	}
         .main {
-            margin-right: 130px;
+            text-align: center;
+            /*margin-right: 50px;*/
             padding: 0px 10px;
         }
-        .center{
+        .image{
             display: block;
             margin-right: auto;
             margin-left: auto;
             width: 40%;
+            border: 2px solid black;
         }
-    	h1 {
-    		color: #acacac;
-    		font-size: 40px;
-    		/*background: #96172e;*/
-    	}
+        .change{
+            font-size: 25px;
+            text-align: center;
+            background-color: #96172e;
+            color: black;
+            border: 2px solid black;
+            width: 100px;
+            height: 30px;
+        }
+        .charger{
+            font-size: 20px;
+            text-align: center;
+            background-color: #96172e;
+            color: black;
+            border: 2px solid black;
+            width: 350px;
+            height: 35px;
+        }
+        .modif_album1{
+            font-size: 20px;
+            text-align: center;
+            background-color: #96172e;
+            color: black;
+            border: 2px solid black;
+            width: 220px;
+            height: 35px;
+        }
+        .modif_album1:hover, .modif_album2:hover, .charger:hover, .change:hover, .presentation:hover{
+            color: #96172e;
+            background-color: black;
+            border: 2px solid #96172e;
+        }
+        .modif_album2, .presentation{
+            font-size: 20px;
+            text-align: center;
+            background-color: #96172e;
+            color: black;
+            border: 2px solid black;
+            width: 200px;
+            height: 35px;
+        }
     	p {
     		font-size: 20px;
     	}
     </style>
   </head>
   <body>
-    <div class="sidenav" id="noms_des_photos">
-        <p style='color: #000;'><u><b>Photos disponibles</b></u></p>
+    <div id="deux_sidenavs">
+        <div class="sidenav_left" id="liste_albums">
+            <p style='color: #000;'><u><b>Albums disponibles</b></u></p>
+            <p style="color: #fff;">Aucun album chargé</p>
+        </div>
+        <div class="sidenav_right" id="noms_des_photos">
+            <p style='color: #000;'><u><b>Photos disponibles</b></u></p>
+            <p style="color: #fff;">Aucune photo chargée</p>
+        </div>
     </div>
-
     <div class="main">
-        <h1 style="color: #96172e">ECL Media Player</h1>
-        <div>   
-            <button onclick="showImage()">Charger les images</button>
-        </div>
-        <div id="titre">
+        <h1 id="Titre_de_page" style="color: #96172e; font-size: 60px; text-align: center;">ECL Media Player</h1>
+
+        <div id="charger_images">   
+            <button class="charger" style="align-self: center" onclick="loadImage()">Charger les images</button>
         </div>
 
-        <p></p>
-        <p></p>
-        <img id="dropzone" class="center"/>
-        <h1></h1>
-        <h1></h1>
-        <div class="buttons">
-            <button onclick="precedent()"><<<<</button>
-            <button onclick="next()">>>>></button>
+        <div id="titre"></div>
+
+        <div>
+            <img id="dropzone" class="image"/>
         </div>
-        <p></p>
-        <p id="creation"></p>
-        <div id="album">
-            <button onclick="ajouter_photo_a_album()" class="dropbtn">Ajouter la photo à un album</button>
-            <button onclick="titre = creer_album()">Créer un album</button>
+        
+        <div class="all_buttons" style="position: fixed; text-align: center; bottom: 15px; right: 100px; left: 100px;">
+            <div class="buttons">
+                <button class="change" style="height: 35px;" onclick="precedent()"><<<<</button>
+                <button id="presentation" class="presentation" style="width: 140px;" onclick="presentation()">Présentation</button>
+                <button class="change" style="height: 35px;" onclick="next()">>>>></button>
+            </div>
+            <p></p>
+            <p id="creation"></p>
+            <div id="ajouter_photo_album">
+                <button class="modif_album1" onclick="ajouter_photo_a_album()">Ajouter à un album</button>
+                <button class="modif_album1" onclick="supprimer_photo_de_album()">Supprimer d'un album</button>
+            </div>
+            <div id="albums">
+                <button class="modif_album2" onclick="titre = creer_album()">Créer un album</button>
+                <button class="modif_album2" onclick="titre = eliminer_album()">Eliminer un album</button>
+            </div>
         </div>
-        <div id="view-by"></div>
     </div>
      
-    <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>-->
-    <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>
+    <script type="text/javascript" src="../public/javascripts/main.js"></script>-->
     <script type="text/javascript">
         flag = false;
         liste_photos = [];
         actual_photo = "" ;
+        liste_photos = <%- list %>;
 
-    	showImage = function(){
-			var h = "<p class='liste' style='color: #000;'><u><b>Photos disponibles</b></u></p>"
-            var request = new XMLHttpRequest ();
-            request.onload = function(){
-                var resp = this.responseText;
-                var liste = JSON.parse(resp);
-                liste_photos = liste;
-                
-                for (i in liste.photos){
-                    h = h + "\n"+"<div><a onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
-                }
-                h = h + "\n"+"<div><p> </p></div>";
-                
-            };
-            request.open("GET", "/images/liste_photos.json", true);
-            request.send(null);
+    	loadImage = function(){
+			var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>";
+            for (i in liste_photos){
+                h += "\n"+"<div><a style='color: #fff; font-size: 18px;' onclick=show('"+liste_photos[i]+"')>"+liste_photos[i]+"</a></div>";
+            }
+            h = h + "\n"+"<div><p> </p></div>";
+            noms_des_photos.innerHTML = h;
             flag = true;
+
+
 			var albumrequest = new XMLHttpRequest ();
             albumrequest.onload = function(){
                 var resp = this.responseText;
                 var liste_album = JSON.parse(resp);
-				h+= "<p style='color: #000;'><u><b>albums disponibles</b></u></p>";
-                //var h = "";
+                var left_text = "<p style='color: #000;'><u><b>Albums disponibles</b></u></p>";
                 for (var i=0;i<liste_album.albums.length;i++){
-                    h+= "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a onclick=showimages_album \
+                    left_text += "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a style="color: #fff; font-size: 21px;" onclick=show_images_album \
 					('+JSON.stringify(liste_album.albums[i])+')>'+Object.keys(liste_album.albums[i])+'</a></div>';
                 }
                 h = h + "\n"+"<div><p> </p></div>";
-				noms_des_photos.innerHTML = h;
+				liste_albums.innerHTML = left_text;
 				
             };
-			albumrequest.open("GET", "/images/liste_albums.json", true);
+			albumrequest.open("GET", "/albums/liste_albums.json", true);
             albumrequest.send(null);
 			
     	}
@@ -139,27 +196,29 @@
         show = function(name){
             var image = document.getElementById("dropzone");
             var titre = document.getElementById("titre")
-            titre.innerHTML = "<h2>"+name+"</h2>"
+            var charger = document.getElementById("charger_images");
+            titre.innerHTML = "<h2>"+name+"</h2>";
+            charger.innerHTML = "";
             source = "/images/"+name;
             image.src = source;
             actual_photo = name;
 
         }
-		showimages_album=function(names){
-					names=JSON.parse(names);
-					for ( j in names[Object.keys(names)]){
-						var node=document.createElement('div');
-						node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
-						document.getElementById(Object.keys(names)).appendChild(node);
-			}
-           
+		show_images_album=function(names){
+			names=JSON.parse(names);
+			for ( j in names[Object.keys(names)]){
+				var node=document.createElement('div');
+				node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
+				document.getElementById(Object.keys(names)).appendChild(node);
+			}       
 		}
+        
         precedent = function(){
             if (flag == true){
-                var index = liste_photos.photos.indexOf(actual_photo);
+                var index = liste_photos.indexOf(actual_photo);
                 if (index != 0) {
                     var image = document.getElementById("dropzone");
-                    name = liste_photos.photos[index-1];
+                    name = liste_photos[index-1];
                     var titre = document.getElementById("titre")
                     titre.innerHTML = "<h2>"+name+"</h2>"
                     source = "/images/"+name;
@@ -168,15 +227,50 @@
                 }        
             }      
         }
+        presentation = function(){
+            var t = 2.5;
+            if (flag == true) {
+                var index = liste_photos.indexOf(actual_photo);
+                var size = liste_photos.length;
+                var cont = 0;
+                var image = document.getElementById("dropzone");
+                var titre = document.getElementById("titre");
+                var pres = document.getElementById("presentation");
+                //pres.innerHTML = "Arreter";
+                var time_flag = true;
+                if (index != size-1) {
+                    for (var i = index; i < size - 1; i++) {
+                    let k = i;
+                    if (time_flag == true) {
+                        var timer = setTimeout(function(){
+                            name = liste_photos[k+1];
+                            titre.innerHTML = "<h2>"+name+"</h2>";
+                            source = "../images/"+name;
+                            image.src = source;   
+                        }, 1000*t + 1000*t*cont);
+                        //console.log(cont);
+                        cont += 1;
+                    }
+                    /*document.onclick = function(event){
+                        clearTimeout(timer);
+                        console.log('click');
+                        time_flag = false;
+                        }*/
+                    }
+                }
+
+            }       //La fonction presentation est impossible d'arreter manuellement
+        }
+
         next = function(){
             if (flag == true){
-                var index = liste_photos.photos.indexOf(actual_photo);
-                var size = liste_photos.photos.length;
+                var index = liste_photos.indexOf(actual_photo);
+                var size = liste_photos.length;
                 if (index < size-1) {
                     var image = document.getElementById("dropzone");
-                    name = liste_photos.photos[index+1];
-                    var titre = document.getElementById("titre")
-                    titre.innerHTML = "<h2>"+name+"</h2>"
+                    name = liste_photos[index+1];
+                    var titre = document.getElementById("titre");
+                    titre.innerHTML = "<h2>"+name+"</h2>";
                     source = "../images/"+name;
                     image.src = source;
                     actual_photo = name;  
@@ -187,9 +281,9 @@
             var txt;
             var titre = prompt("Titre de l'album", "");
             if (titre == null || titre == "") {
-            } else{
+            } 
+            else{
                 txt = "Vous avez créé l'album "+titre+"";
-                console.log(titre);
                 var request2 = new XMLHttpRequest ();
                 request2.onload = function(){
                     var resp = this.responseText;
@@ -198,36 +292,76 @@
                     //Manque la partie de POST pour modifier le JSON
                     var myJSON = JSON.stringify(albums);
                 }
-                request2.open("GET", "/images/liste_albums.json", true);
+                request2.open("GET", "/albums/liste_albums.json", true);
                 request2.send(null);
                 return(titre)
             }
         }
+        eliminer_album = function(){
+            var txt;
+            var album_req = new XMLHttpRequest();
+            album_req.onload = function(){
+                var resp = this.responseText;
+                var albums = JSON.parse(resp);
+                var name;
+                var liste = "";
+                for (i in albums.albums){
+                        name = Object.keys(albums.albums[i]);
+                        liste = liste + "\n" + name;
+                }
+                var titre = prompt("Albums existants: "+"\n"+liste+"\n ", "");
+                var control = false;
+                for (i in albums.albums){
+                    var name = Object.keys(albums.albums[i]);
+                    if (titre == name) {
+                        control = true;
+                        id = i;
+                    }
+                }
+                if (control == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
+                    alert("L'album n'existe pas !");
+                }
+                if (control == true){
+                    var confirmer = confirm("Voulez vous vraiment éliminer l'album "+titre+" ?");
+                    if (confirmer == true) { //Confirmer l'élimination de l'album
+                        albums.albums.splice(id, 1);
+                        var JSON_file = JSON.stringify(albums);
+                        var envoyer = new XMLHttpRequest();
+                        envoyer.open("POST", "/newalbum", true);
+                        envoyer.setRequestHeader("Content-Type", "application/json");
+                        envoyer.send(JSON_file);
+                    }
+                }
+            }            
+            album_req.open("GET", "/albums/liste_albums.json", true);
+            album_req.send(null);  
+        }
 
-        ajouter_photo_a_album = function(){
+        ajouter_photo_a_album = function(){      
             if (actual_photo != "") {
                 var album_req = new XMLHttpRequest()
                 album_req.onload = function(){
                     var resp = this.responseText;
                     var albums = JSON.parse(resp);
+                    var name;
                     var liste = "";
                     for (i in albums.albums){
-                        var titulo = Object.keys(albums.albums[i]);
-                        liste = liste + "\n" + titulo;
+                        name = Object.keys(albums.albums[i]);
+                        liste = liste + "\n" + name;
                     }
-                    var titre = prompt("Albums disponibles: "+"\n"+liste+"\n ", "");
-                    var flag = false;
+                    var titre = prompt("Photo choisie: "+actual_photo+"\n\n"+"Albums disponibles: "+"\n"+liste+"\n ", "");
+                    var control = false;
                     for (i in albums.albums){
-                        var titulo = Object.keys(albums.albums[i]);
-                        if (titre == titulo) {
-                            flag = true;
+                        var name = Object.keys(albums.albums[i]);
+                        if (titre == name) {
+                            control = true;
                             id = i;
                         }
                     }
-                    if (flag == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
+                    if (control == false & titre != "" & titre != null) { //Si l'album  n'existe pas, sortir
                         alert("L'album n'existe pas !");
                     } 
-                    if (flag == true) { //Ajouter la photo a l'album
+                    if (control == true) { //Ajouter la photo a l'album
                         var ajouter = true;
                         for (i in albums.albums[id][titre]){ // Verifier que la photo n'existe pas déjà sur l'album
                             photo_in_album = albums.albums[id][titre][i];
@@ -251,54 +385,13 @@
                         }
                     }
                 }    
-                album_req.open("GET", "/images/liste_albums.json", true);
+                album_req.open("GET", "/albums/liste_albums.json", true);
                 album_req.send(null);  
             }
         }
-
-        /*$(function(){
-                        $("#dialog").dialog({
-                            buttons: {
-                                "First": function(){
-                                    selected = 1;
-                                },
-                                texto: function(){
-                                    selected = 2;
-                                }
-                            }
-                        });                   
-                    });*/
-                    /*//console.log("Ha funcionado");
-            //console.log(albums);
-            var cont = "<select id='droplist' onchange='myFunction()'>"
-            var menu = document.getElementById("view-by");
-            //console.log(albums)
-            for (i in albums.albums){
-                var titulo = Object.keys(albums.albums[i]);
-                //console.log(Object.keys(albums.albums[i]));
-                //console.log(titulo[0]);
-                cont = cont + "\n"+"<option value='"+i+"'>"+titulo[0]+"</option>";
-                /*for (j in albums.albums[i]){
-                    //console.log('eh', albums.albums[i][j]);
-                }
-                //cont = cont + "\n"+"<option value='"+i+"'>"+albums.albums[i]
-            }
-            cont = cont + "\n"+"</select>";
-            //console.log(cont);
-            menu.innerHTML = cont;
-            var flag = true;
-
-            myFunction = function(){
-                var e = document.getElementById('droplist');
-                var selection = e.options[e.selectedIndex].value;
-                var titre = e.options[e.selectedIndex].text;
-                console.log('selection', selection);
-                console.log('titre', titre);
-            }           
-            selection = 0;
-            titre = "avions"
-            console.log('saliendo');
-            return [selection, titre];*/
+        supprimer_photo_de_album = function(){
+            //Pas fait
+        }
     </script>
   </body>
 </html>
