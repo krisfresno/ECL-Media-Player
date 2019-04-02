@@ -171,6 +171,7 @@
         liste_photos = [];
         actual_photo = "" ;
         liste_photos = <%- list %>;
+        album_actuel = liste_photos;
 		var albumrequest = new XMLHttpRequest ();
 		albumrequest.open("GET", "/albums/liste_albums.json", true);
         albumrequest.send(null);
@@ -193,8 +194,6 @@
                var resp = this.responseText;
                  var resp = this.responseText;
                 liste_album = JSON.parse(resp);
-				console.log(liste_album);
-                //var h = "";
                 for (var i=0;i<liste_album.albums.length;i++){
                     left_text+= "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'">'+"<a style='color: #fff; font-size: 18px;' onclick=showimages_album('"+JSON.stringify(liste_album.albums[i])+"')>"+Object.keys(liste_album.albums[i])+"</a></div>";
                 }
@@ -267,7 +266,6 @@
                             source = "../images/"+name;
                             image.src = source;   
                         }, 1000*t + 1000*t*cont);
-                        //console.log(cont);
                         cont += 1;
                     }
                     /*document.onclick = function(event){
@@ -320,8 +318,6 @@
                     if (confirmer == true) { 
                         albums.albums.push(JSON.parse('{"'+titre+'":[]}'));
                         var JSON_file = JSON.stringify(albums);
-                        console.log(albums);
-                        console.log(JSON_file);
                         var envoyer = new XMLHttpRequest();
                         envoyer.open("POST", "/newalbum", true);
                         envoyer.setRequestHeader("Content-Type", "application/json");
