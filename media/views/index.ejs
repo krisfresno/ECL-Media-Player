@@ -21,7 +21,7 @@
             z-index: 1;
             top: 190px;
             bottom: 25px;
-            right: 130px;
+            right: 120px;
             background: #96172e;
             overflow-x: hidden;
             overflow-y: scroll;
@@ -33,7 +33,7 @@
             position: fixed;
             z-index: 1;
             top: 190px;
-            left: 130px;
+            left: 120px;
             background: #96172e;
             overflow-x: hidden;
             padding: 8px 0;
@@ -61,11 +61,11 @@
             /*margin-right: 50px;*/
             padding: 0px 10px;
         }
-        .center{
+        .image{
             display: block;
             margin-right: auto;
             margin-left: auto;
-            width: 35%;
+            width: 40%;
             border: 2px solid black;
         }
         .change{
@@ -92,7 +92,7 @@
             background-color: #96172e;
             color: black;
             border: 2px solid black;
-            width: 350px;
+            width: 220px;
             height: 35px;
         }
         .modif_album1:hover, .modif_album2:hover, .charger:hover, .change:hover, .presentation:hover{
@@ -128,14 +128,14 @@
     <div class="main">
         <h1 id="Titre_de_page" style="color: #96172e; font-size: 60px; text-align: center;">ECL Media Player</h1>
 
-        <div>   
+        <div id="charger_images">   
             <button class="charger" style="align-self: center" onclick="loadImage()">Charger les images</button>
         </div>
 
         <div id="titre"></div>
 
         <div>
-            <img id="dropzone" class="center"/>
+            <img id="dropzone" class="image"/>
         </div>
         
         <div class="all_buttons" style="position: fixed; text-align: center; bottom: 15px; right: 100px; left: 100px;">
@@ -147,7 +147,8 @@
             <p></p>
             <p id="creation"></p>
             <div id="ajouter_photo_album">
-                <button class="modif_album1" onclick="ajouter_photo_a_album()">Ajouter la photo à un album</button>
+                <button class="modif_album1" onclick="ajouter_photo_a_album()">Ajouter à un album</button>
+                <button class="modif_album1" onclick="supprimer_photo_de_album()">Supprimer d'un album</button>
             </div>
             <div id="albums">
                 <button class="modif_album2" onclick="titre = creer_album()">Créer un album</button>
@@ -195,7 +196,9 @@
         show = function(name){
             var image = document.getElementById("dropzone");
             var titre = document.getElementById("titre")
-            titre.innerHTML = "<h2>"+name+"</h2>"
+            var charger = document.getElementById("charger_images");
+            titre.innerHTML = "<h2>"+name+"</h2>";
+            charger.innerHTML = "";
             source = "/images/"+name;
             image.src = source;
             actual_photo = name;
@@ -390,6 +393,9 @@
                 album_req.open("GET", "/albums/liste_albums.json", true);
                 album_req.send(null);  
             }
+        }
+        supprimer_photo_de_album = function(){
+
         }
     </script>
   </body>
