@@ -38,6 +38,7 @@ app.post('/newalbum',function(req,res){
     };
     console.log("File has been created");
 });
+res.send('Done');
 });
 
 
