@@ -177,6 +177,14 @@
         albumrequest.send(null);
 		albumrequest.onload = function(){
 			var JSON_file= JSON.parse(this.responseText)
+			if (Object.keys(JSON_file.albums[0])=="toutes_les_photos"){
+				JSON_file.albums[0]["toutes_les_photos"]=liste_photos ;
+			}
+			else JSON_file.albums.splice(0, 1, {"toutes_les_photos":liste_photos});
+			var envoyer = new XMLHttpRequest();
+			envoyer.open("POST", "/newalbum", true);
+			envoyer.setRequestHeader("Content-Type", "application/json");
+            envoyer.send(JSON.stringify(JSON_file));
 			
 }
     	loadImage = function(){
