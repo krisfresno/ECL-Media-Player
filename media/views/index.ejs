@@ -148,7 +148,7 @@
         
         <h1></h1>
         <h1></h1>
-        <div class="all_buttons">
+        <div class="all_buttons" style="position: fixed; text-align: center; bottom: 15px; right: 100px; left: 100px;">
             <div class="buttons">
                 <button class="change" style="height: 35px;" onclick="precedent()"><<<<</button>
                 <button id="presentation" class="presentation" style="width: 140px;" onclick="presentation()">Présentation</button>
@@ -164,8 +164,6 @@
                 <button class="modif_album2" onclick="titre = eliminer_album()">Supprimer un album</button>
             </div>
         </div>
-
-        <div id="view-by"></div>
     </div>
      
     <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>
@@ -251,7 +249,7 @@
                     for (var i = index; i < size - 1; i++) {
                     let k = i;
                     if (time_flag == true) {
-                        timer = setTimeout(function(){
+                        var timer = setTimeout(function(){
                             name = liste_photos[k+1];
                             titre.innerHTML = "<h2>"+name+"</h2>";
                             source = "../images/"+name;
