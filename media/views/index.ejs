@@ -12,6 +12,9 @@
             color: green;
 
         }
+		.ui-dialog-titlebar-close {
+			visibility: hidden;
+		}
         .liste:hover {
         }
 
@@ -112,6 +115,22 @@
     	p {
     		font-size: 20px;
     	}
+		#album {
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+			margin-top: auto;
+            margin-bottom: auto;
+		}
+		#nouvel_album{
+			position: static;
+			background:#96172e;
+			display:none;
+			margin-right: auto;
+            margin-left: auto;
+			margin-top: auto;
+            margin-bottom: auto;
+		}
     </style>
   </head>
   <body>
@@ -153,9 +172,17 @@
         </div>
         <div id="view-by"></div>
     </div>
-     
-    <!--<script type="text/javascript" src="../public/javascripts/requests.js"></script>
-    <script type="text/javascript" src="../public/javascripts/main.js"></script>-->
+     <div id="nouvel_album"  >
+		<p>Titre du nouvel album</p>
+		<input type="text" id="titre_album"/>
+		<p id="message"></p>
+		<button id="valider"type="button">Valider</button>
+		<button id="quitter"type="button">Quitter</button> 
+		</div>
+			</div>
+   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+   
     <script type="text/javascript">
         flag = false;
         liste_photos = [];
@@ -173,7 +200,7 @@
                 liste_photos = liste;
 
                 for (i in liste.photos){
-                    h = h + "\n"+"<div><a style='color: #fff; font-size: 18px;' onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
+                    h = h + "\n"+"<div><a style='color: #fff ; font-size: 18px;' onclick=show('"+liste.photos[i]+"')>"+liste.photos[i]+"</a></div>";
                 }
                 h = h + "\n"+"<div><p> </p></div>";
                 noms_des_photos.innerHTML = h;
@@ -184,15 +211,16 @@
 
 
 			var albumrequest = new XMLHttpRequest ();
+			var left_text = "<p style='color: #000;'><u><b>Albums disponibles</b></u></p>";
             albumrequest.onload = function(){
                 var resp = this.responseText;
-                var liste_album = JSON.parse(resp);
-                var left_text = "<p style='color: #000;'><u><b>Albums disponibles</b></u></p>";
+                 var resp = this.responseText;
+                liste_album = JSON.parse(resp);
+                //var h = "";
                 for (var i=0;i<liste_album.albums.length;i++){
-                    left_text += "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'"><a style="color: #fff; font-size: 21px;" onclick=show_images_album \
-					('+JSON.stringify(liste_album.albums[i])+')>'+Object.keys(liste_album.albums[i])+'</a></div>';
+                    left_text+= "\n"+'<div id="'+Object.keys(liste_album.albums[i])+'">'+"<a style='color: #fff; font-size: 18px;' onclick=showimages_album('"+JSON.stringify(liste_album.albums[i])+"')>"+Object.keys(liste_album.albums[i])+"</a></div>";
                 }
-                h = h + "\n"+"<div><p> </p></div>";
+                left_text = left_text + "\n"+"<div><p> </p></div>";
 				liste_albums.innerHTML = left_text;
 				
             };
@@ -210,13 +238,17 @@
             actual_photo = name;
 
         }
-		show_images_album=function(names){
-			names=JSON.parse(names);
-			for ( j in names[Object.keys(names)]){
-				var node=document.createElement('div');
-				node.innerHTML="<a onclick=show('"+j+"')>"+j+"</a>";
-				document.getElementById(Object.keys(names)).appendChild(node);
-			}       
+		showimages_album=function(names){
+				names=JSON.parse(names);
+					if (document.getElementById(Object.keys(names)).childNodes.length==1){
+					for (var j=0 ;j<names[Object.keys(names)].length;j++){
+						var node=document.createElement('div');
+						node.innerHTML="<a style='color: #fff; font-size: 18px;' onclick=show('"+names[Object.keys(names)][j]+"')>"+names[Object.keys(names)][j]+"</a>";
+						document.getElementById(Object.keys(names)).appendChild(node);
+			}}
+			else document.getElementById(Object.keys(names)).innerHTML="<a style='color: #fff; font-size: 18px;' onclick=showimages_album('"+JSON.stringify(names)+"')>"+Object.keys(names)+"</a></div>";
+			
+           
 		}
         
         precedent = function(){
@@ -272,25 +304,49 @@
             }
         }
         creer_album = function(){
-            var txt;
-            var titre = prompt("Titre de l'album", "");
-            if (titre == null || titre == "") {
-            } 
-            else{
-                txt = "Vous avez créé l'album "+titre+"";
-                var request2 = new XMLHttpRequest ();
-                request2.onload = function(){
-                    var resp = this.responseText;
-                    var albums = JSON.parse(resp);
-                    albums[titre] = [];
-                    //Manque la partie de POST pour modifier le JSON
-                    var myJSON = JSON.stringify(albums);
+			var txt;
+            var album_req = new XMLHttpRequest();
+            album_req.onload = function(){
+                var resp = this.responseText;
+                var albums = JSON.parse(resp);
+                var name;
+                
+                var titre = prompt("Nom du nouvel album");
+                var control = true;
+                for (i in albums.albums){
+                    var name = Object.keys(albums.albums[i]);
+                    if (titre == name) {
+                        control = false;
+                    }
                 }
-                request2.open("GET", "/images/liste_albums.json", true);
-                request2.send(null);
-                return(titre)
-            }
-        }
+                if (control == false ){ //Si l'album  existe pas, sortir
+                    alert("L'album existe !");
+                }
+				else if( titre == "" & titre == null) {
+					alert("entrée vide!");
+				}
+                if (control == true){
+                    var confirmer = confirm("Voulez vous créer l'album "+titre+" ?");
+                    if (confirmer == true) { 
+                        albums.albums.push(JSON.parse('{"'+titre+'":[]}'));
+                        var JSON_file = JSON.stringify(albums);
+                        console.log(albums);
+                        console.log(JSON_file);
+                        var envoyer = new XMLHttpRequest();
+                        envoyer.open("POST", "/newalbum", true);
+                        envoyer.setRequestHeader("Content-Type", "application/json");
+                        envoyer.send(JSON_file);
+						envoyer.onreadystatechange= function(){
+						loadImage();
+									
+						}
+                    }
+                }
+            }            
+            album_req.open("GET", "/images/liste_albums.json", true);
+            album_req.send(null);  
+			
+			}
         eliminer_album = function(){
             var txt;
             var album_req = new XMLHttpRequest();
@@ -323,15 +379,31 @@
                         console.log(albums);
                         console.log(JSON_file);
                         var envoyer = new XMLHttpRequest();
-                        //envoyer.open("POST", "/newalbum", true);
+                        envoyer.open("POST", "/newalbum", true);
                         envoyer.setRequestHeader("Content-Type", "application/json");
-                        //envoyer.send(JSON_file);
+                        envoyer.send(JSON_file);
+						envoyer.onreadystatechange= function(){
+						loadImage();
+									
+						}
                     }
                 }
             }            
             album_req.open("GET", "/images/liste_albums.json", true);
             album_req.send(null);  
         }
+		poster=function(nouvel,liste_albums){
+			liste_albums.albums.push(JSON.parse('{"'+nouvel+'":[]}'));
+			console.log(liste_albums)
+			var request2 = new XMLHttpRequest ();
+			request2.open("POST", "/newalbum", true);
+			request2.setRequestHeader("Content-Type", "application/json");
+            request2.send(JSON.stringify(liste_albums));
+			request2.onreadystatechange= function(){
+						loadImage();
+									
+			}
+		}
 
         ajouter_photo_a_album = function(){      
             if (actual_photo != "") {
