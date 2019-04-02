@@ -31,7 +31,7 @@ app.get('/public', function(req,res){
   res.send('public');
 });
 app.post('/newalbum',function(req,res){
-	fs.writeFile("./public/images/liste_albums.json", JSON.stringify(req.body), (err) => {
+	fs.writeFile("./public/albums/liste_albums.json", JSON.stringify(req.body), (err) => {
     if (err) {
         console.error(err);
         return;
