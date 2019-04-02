@@ -259,10 +259,7 @@
                     }
                 }
 
-            }       
-        }
-        cantar = function(){
-            console.log('caaanto');
+            }       //La fonction presentation est impossible d'arreter manuellement
         }
 
         next = function(){
@@ -329,8 +326,6 @@
                     if (confirmer == true) { //Confirmer l'élimination de l'album
                         albums.albums.splice(id, 1);
                         var JSON_file = JSON.stringify(albums);
-                        console.log(albums);
-                        console.log(JSON_file);
                         var envoyer = new XMLHttpRequest();
                         envoyer.open("POST", "/newalbum", true);
                         envoyer.setRequestHeader("Content-Type", "application/json");
@@ -395,7 +390,7 @@
             }
         }
         supprimer_photo_de_album = function(){
-
+            //Pas fait
         }
     </script>
   </body>
