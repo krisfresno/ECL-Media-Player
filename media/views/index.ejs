@@ -156,16 +156,6 @@
             </div>
         </div>
     </div>
-     
-    <!--<script type="text/javascript" console.log(JSON_file);
-			JSON_file.albums.toutes_les_photos=liste_photo
-			JSON_file=JSON.stringify(JSON_file);
-			var envoyer = new XMLHttpRequest();
-			envoyer.open("POST", "/newalbum", true);
-			envoyer.setRequestHeader("Content-Type", "application/json");
-			envoyer.send(JSON_file);
-		src="../public/javascripts/requests.js"></script>
-    <script type="text/javascript" src="../public/javascripts/main.js"></script>-->
     <script type="text/javascript">
         flag = false;
         liste_photos = [];
@@ -189,12 +179,6 @@
 			
 }
     	loadImage = function(){
-			/*var h = "<p style='color: #000;'><u><b>Photos disponibles</b></u></p>";
-            for (i in liste_photos){
-                h += "\n"+"<div><a style='color: #fff; font-size: 18px;' onclick=show('"+liste_photos[i]+"')>"+liste_photos[i]+"</a></div>";
-            }
-            h = h + "\n"+"<div><p> </p></div>";
-            noms_des_photos.innerHTML = h;*/
     
 			var left_text = "<p style='color: #000;'><u><b>Albums disponibles</b></u></p>";
 			var albumrequest = new XMLHttpRequest ();
