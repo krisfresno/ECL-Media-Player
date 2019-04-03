@@ -179,6 +179,7 @@
         flag = false;
         liste_photos = [];
         actual_photo = "" ;
+		actual_album=[];
         liste_photos = <%- list %>;
 		var albumrequest = new XMLHttpRequest ();
 		albumrequest.open("GET", "/albums/liste_albums.json", true);
@@ -201,9 +202,8 @@
                 h += "\n"+"<div><a style='color: #fff; font-size: 18px;' onclick=show('"+liste_photos[i]+"')>"+liste_photos[i]+"</a></div>";
             }
             h = h + "\n"+"<div><p> </p></div>";
-            noms_des_photos.innerHTML = h;
-            flag = true;*/
-
+            noms_des_photos.innerHTML = h;*/
+            
 			var left_text = "<p style='color: #000;'><u><b>Albums disponibles</b></u></p>";
 			var albumrequest = new XMLHttpRequest ();
             albumrequest.onload = function(){
@@ -241,7 +241,16 @@
             }
             h = h + "\n"+"<div><p> </p></div>";
             noms_des_photos.innerHTML = h;
-            flag = true;
+            
+			image = document.getElementById("dropzone");
+			if (names[Object.keys(names)].length>0){
+			
+			image.src="/images/"+names[Object.keys(names)][0];
+			actual_photo=names[Object.keys(names)][0];
+			flag = true;
+			}
+			else flag=false;
+			actual_album=names[Object.keys(names)];
 			
            
 		}
@@ -249,10 +258,11 @@
         
         precedent = function(){
             if (flag == true){
-                var index = liste_photos.indexOf(actual_photo);
+				liste=actual_album;
+                var index = liste.indexOf(actual_photo);
                 if (index != 0) {
                     var image = document.getElementById("dropzone");
-                    name = liste_photos[index-1];
+                    name = actual_album[index-1];
                     var titre = document.getElementById("titre")
                     titre.innerHTML = "<h2>"+name+"</h2>"
                     source = "/images/"+name;
@@ -264,8 +274,8 @@
         presentation = function(){
             var t = 2.5;
             if (flag == true) {
-                var index = liste_photos.indexOf(actual_photo);
-                var size = liste_photos.length;
+                var index = actual_album.indexOf(actual_photo);
+                var size = actual_album.length;
                 var cont = 0;
                 var image = document.getElementById("dropzone");
                 var titre = document.getElementById("titre");
@@ -277,7 +287,7 @@
                     let k = i;
                     if (time_flag == true) {
                         var timer = setTimeout(function(){
-                            name = liste_photos[k+1];
+                            name = actual_album[k+1];
                             titre.innerHTML = "<h2>"+name+"</h2>";
                             source = "../images/"+name;
                             image.src = source;   
@@ -301,11 +311,11 @@
 
         next = function(){
             if (flag == true){
-                var index = liste_photos.indexOf(actual_photo);
-                var size = liste_photos.length;
+                var index = actual_album.indexOf(actual_photo);
+                var size = actual_album.length;
                 if (index < size-1) {
                     var image = document.getElementById("dropzone");
-                    name = liste_photos[index+1];
+                    name = actual_album[index+1];
                     var titre = document.getElementById("titre");
                     titre.innerHTML = "<h2>"+name+"</h2>";
                     source = "../images/"+name;
